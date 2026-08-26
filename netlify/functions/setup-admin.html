@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin Setup</title>
+</head>
+<body style="font-family:Arial;padding:40px">
+  <h2>Admin Setup</h2>
+
+  <p>Enter your setup secret:</p>
+
+  <input
+    id="secret"
+    type="password"
+    placeholder="ADMIN_SETUP_SECRET"
+    style="padding:10px;width:300px"
+  >
+
+  <button
+    id="run"
+    style="padding:10px 20px;margin-left:10px"
+  >
+    Assign Admin
+  </button>
+
+  <pre id="result"></pre>
+
+  <script>
+    document.getElementById('run').onclick = async () => {
+      const secret = document.getElementById('secret').value;
+      const result = document.getElementById('result');
+
+      if (!secret) {
+        result.textContent = 'Please enter the setup secret.';
+        return;
+      }
+
+      result.textContent = 'Processing...';
+
+      try {
+        const response = await fetch('/.netlify/functions/make-admin', {
+          method: 'POST',
+          headers: {
+            'x-setup-secret': secret
+          }
+        });
+
+        const text = await response.text();
+        result.textContent = text;
+      } catch (error) {
+        result.textContent = error.message;
+      }
+    };
+  </script>
+</body>
+</html>
