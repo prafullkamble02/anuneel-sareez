@@ -1,0 +1,4 @@
+/api/catalog /.netlify/functions/catalog 200
+/api/image /.netlify/functions/image 200
+/admin/* /admin/:splat 200! Role=admin
+/admin/* /login.html 401!
